@@ -36,6 +36,24 @@ public class CategoryService {
 		return new CategoryDTO(entity);
 		
 	}
+	@Transactional
+	public CategoryDTO save(CategoryDTO dto) {
+		// Forma Otimizada - by Fagner
+		return new CategoryDTO(categoryRepository.save(new Category(null, dto.getName())));
+		
+		/*
+		Forma acadêmica (passo-a-passo)
+		Category entity = new Category();
+		entity.setName(dto.getName());
+		entity = categoryRepository.save(entity);
+		return new CategoryDTO(entity); 
+		*/
+	}
+	
+//	@Transactional
+//	public CategoryDTO update(Long id, CategoryDTO dto) {
+//		
+//	}
 
 
 }

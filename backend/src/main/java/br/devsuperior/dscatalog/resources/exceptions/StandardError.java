@@ -7,14 +7,16 @@ public class StandardError implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	/*
+	/* JSON que é retonado
+	  
 	  {
     	"timestamp": "2022-11-22T16:18:43.773+00:00",
     	"status": 500,
     	"error": "Internal Server Error",
-    	"message": "",
-    	"path": "/categories/6"
+    	"message": "error message returned by exeption method getMessage()",
+    	"path": "/resource/69"
 	  }
+	  
 	  
 	 * */
 	
