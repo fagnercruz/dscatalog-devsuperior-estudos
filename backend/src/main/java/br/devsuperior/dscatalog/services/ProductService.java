@@ -12,8 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.devsuperior.dscatalog.dto.CategoryDTO;
 import br.devsuperior.dscatalog.dto.ProductDTO;
+import br.devsuperior.dscatalog.entities.Category;
 import br.devsuperior.dscatalog.entities.Product;
+import br.devsuperior.dscatalog.repositories.CategoryRepository;
 import br.devsuperior.dscatalog.repositories.ProductRepository;
 import br.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import br.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
@@ -24,19 +27,17 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 	
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAllPaginado(PageRequest pageRequest){
 		Page<Product> list = repository.findAll(pageRequest);
 		return list.map(item -> new ProductDTO(item));
-//		return list.stream().map(item -> new ProductDTO(item)).collect(Collectors.toList());
 	}
 
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
-		//return new ProductDTO(categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada")));
-		
-		
-		// mesma coisa acima só que destrinchada para entender melhor
 		Optional<Product> obj = repository.findById(id);
 		Product entity = /* obj.get(); */ obj.orElseThrow( () -> new ResourceNotFoundException("Categoria não encontrada."));  
 		return new ProductDTO(entity, entity.getCategories());
@@ -47,12 +48,12 @@ public class ProductService {
 				
 		//Forma acadêmica (passo-a-passo)
 		Product entity = new Product();
-		//entity.setName(dto.getName());
+		copyDTOToEntity(dto, entity);
 		entity = repository.save(entity);
 		return new ProductDTO(entity); 
 		
 	}
-	
+
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
 		
@@ -61,7 +62,7 @@ public class ProductService {
 		
 		try {
 			Product entity =  repository.getOne(id);
-			//entity.setName(dto.getName());
+			copyDTOToEntity(dto, entity);
 			entity = repository.save(entity);
 			return new ProductDTO(entity);
 		} catch (EntityNotFoundException e) {
@@ -79,6 +80,21 @@ public class ProductService {
 			throw new DatabaseException("Violação de integridade (Integrity voilation)");
 		}
 		
+	}
+	
+	
+	private void copyDTOToEntity(ProductDTO dto, Product entity) {
+		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
+		entity.setDate(dto.getDate());
+		entity.setImgUrl(dto.getImgUrl());
+		entity.setPrice(dto.getPrice());
+		
+		entity.getCategories().clear();
+		for(CategoryDTO catDTO : dto.getCategories()) {
+			Category cat = categoryRepository.getOne(catDTO.getId());
+			entity.getCategories().add(cat);
+		}
 	}
 
 
