@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.devsuperior.dscatalog.dto.CategoryDTO;
 import br.devsuperior.dscatalog.entities.Category;
 import br.devsuperior.dscatalog.repositories.CategoryRepository;
-import br.devsuperior.dscatalog.services.exceptions.EntityNotFoundException;
+import br.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class CategoryService {
@@ -32,7 +34,7 @@ public class CategoryService {
 		
 		// mesma coisa acima só que destrinchada para entender melhor
 		Optional<Category> obj = categoryRepository.findById(id);
-		Category entity = /* obj.get(); */ obj.orElseThrow( () -> new EntityNotFoundException("Categoria não encontrada."));  
+		Category entity = /* obj.get(); */ obj.orElseThrow( () -> new ResourceNotFoundException("Categoria não encontrada."));  
 		return new CategoryDTO(entity);
 		
 	}
@@ -50,10 +52,22 @@ public class CategoryService {
 		*/
 	}
 	
-//	@Transactional
-//	public CategoryDTO update(Long id, CategoryDTO dto) {
-//		
-//	}
+	@Transactional
+	public CategoryDTO update(Long id, CategoryDTO dto) {
+		
+		// Não usar o findById pq aí a operação de update vai usar 2 requisições ao banco
+		// será usado uma nova abordagem para obter o objeto sem consulta ao banco
+		
+		try {
+			Category entity =  categoryRepository.getOne(id);
+			entity.setName(dto.getName());
+			entity = categoryRepository.save(entity);
+			return new CategoryDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id não encontrado: " + id);
+		}
+		
+	}
 
 
 }
