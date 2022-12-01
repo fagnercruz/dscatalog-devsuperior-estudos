@@ -2,6 +2,8 @@ package br.devsuperior.dscatalog.resources;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +41,7 @@ public class ProductResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProductDTO> save(@RequestBody ProductDTO dto){
+	public ResponseEntity<ProductDTO> save(@Valid @RequestBody ProductDTO dto){
 		dto = service.save(dto);
 		
 		// Criando a URI do resource criado para colocar no cabeçalho Location da resposta (recomendado em criação)
@@ -49,7 +51,7 @@ public class ProductResource {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id,  @RequestBody ProductDTO dto){
+	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid  @RequestBody ProductDTO dto){
 		dto = service.update(id,dto);
 		return ResponseEntity.ok(dto);
 	}
