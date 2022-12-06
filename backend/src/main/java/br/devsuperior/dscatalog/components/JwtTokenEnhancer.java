@@ -35,8 +35,8 @@ public class JwtTokenEnhancer implements TokenEnhancer {
 		
 		//campos para adicionar
 		Map<String, Object> map = new HashMap<>();
-		map.put("userFirstName", user.getFirstName());
-		map.put("userId", user.getId());
+		map.put("user_first_name", user.getFirstName());
+		map.put("user_id", user.getId());
 		
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(map);
 		
