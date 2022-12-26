@@ -64,7 +64,7 @@ public class ProductResourceTests {
 		when(service.save(any())).thenReturn(dto);
 		
 		// simulando o service.findAllPaginado
-		when(service.findAllPaginado(any())).thenReturn(page);
+		//when(service.findAllPaginado(any())).thenReturn(page);
 		
 		// simulando o service.findById
 		when(service.findById(existId)).thenReturn(dto);

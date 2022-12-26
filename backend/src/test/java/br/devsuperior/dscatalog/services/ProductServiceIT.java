@@ -1,4 +1,4 @@
-package br.devsuperior.dscatalog.services;
+/*package br.devsuperior.dscatalog.services;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,4 +80,4 @@ public class ProductServiceIT {
 		Assertions.assertEquals("PC Gamer Alfa", results.getContent().get(2).getName());
 		
 	}
-}
+}*/
