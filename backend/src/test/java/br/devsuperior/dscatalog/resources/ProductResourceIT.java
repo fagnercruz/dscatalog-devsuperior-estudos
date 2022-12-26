@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.devsuperior.dscatalog.dto.ProductDTO;
+import br.devsuperior.dscatalog.tests.TokenUtil;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,11 +31,16 @@ public class ProductResourceIT {
 	private MockMvc mockMvc;
 	@Autowired
 	private ObjectMapper objectMapper;
+	@Autowired
+	private TokenUtil tokenUtil;
 	
 	private Long existingId;
 	private Long noExistingId;
 	private Long countTotalProduct;
 	private ProductDTO dto;
+	
+	private String username;
+	private String password;
 	
 
 	@BeforeEach
@@ -43,6 +49,9 @@ public class ProductResourceIT {
 		noExistingId = 346l;
 		countTotalProduct = 25l;
 		dto = new ProductDTO(null, "Bazuca Militar", "Bazucona bitelosa", 3000.0, "http://www.g1.com.br", Instant.now());
+		username = "maria@gmail.com";
+		password = "123456";
+				
 	}
 	
 	@Test
@@ -63,10 +72,13 @@ public class ProductResourceIT {
 	@Test
 	public void updateShouldReturnObjectDtoWhenIdExist() throws Exception {
 		
+		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+		
 		String JsonBody = objectMapper.writeValueAsString(dto);
 		
 		ResultActions resultActions = mockMvc.perform(
 				put("/products/{id}", existingId)
+					.header("Authorization","Bearer " + accessToken)
 					.content(JsonBody)
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON)
@@ -78,10 +90,12 @@ public class ProductResourceIT {
 	
 	@Test
 	public void updateShouldReturnNotFoundnWhenIdDoesntExist() throws Exception {
+		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 		String JsonBody = objectMapper.writeValueAsString(dto);
 		
 		ResultActions resultActions = mockMvc.perform(
 				put("/products/{id}", noExistingId)
+					.header("Authorization","Bearer " + accessToken)
 					.content(JsonBody)
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON)

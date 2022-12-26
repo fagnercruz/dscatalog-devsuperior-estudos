@@ -1,4 +1,4 @@
-/*package br.devsuperior.dscatalog.services;
+package br.devsuperior.dscatalog.services;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +52,7 @@ public class ProductServiceIT {
 	@Test
 	public void findAllPaginadoShouldReturnPageWhenPage0AndSize10() {
 		PageRequest pageRequest = PageRequest.of(0, 10);
-		Page<ProductDTO> results = productService.findAllPaginado(pageRequest);
+		Page<ProductDTO> results = productService.findAllPaginado(0l,"",pageRequest);
 		
 		Assertions.assertTrue(!results.isEmpty());       						  // testa se a pagina está vazia
 		Assertions.assertEquals(0, results.getNumber()); 						  // testa a página
@@ -63,7 +63,7 @@ public class ProductServiceIT {
 	@Test
 	public void findAllPaginadoShouldReturnEmptyPageWhenPageOverflow() {
 		PageRequest pageRequest = PageRequest.of(50, 10);
-		Page<ProductDTO> results = productService.findAllPaginado(pageRequest);
+		Page<ProductDTO> results = productService.findAllPaginado(0l,"",pageRequest);
 		
 		Assertions.assertTrue(results.isEmpty());       						  // testa se a pagina está vazia
 		
@@ -72,7 +72,7 @@ public class ProductServiceIT {
 	@Test
 	public void findAllPaginadoShouldReturnSortedPageWhenSortByName() {
 		PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("name"));
-		Page<ProductDTO> results = productService.findAllPaginado(pageRequest);
+		Page<ProductDTO> results = productService.findAllPaginado(0l,"",pageRequest);
 		
 		Assertions.assertTrue(!results.isEmpty());       						  // testa se a pagina está vazia
 		Assertions.assertEquals("Macbook Pro", results.getContent().get(0).getName());
@@ -80,4 +80,4 @@ public class ProductServiceIT {
 		Assertions.assertEquals("PC Gamer Alfa", results.getContent().get(2).getName());
 		
 	}
-}*/
+}
