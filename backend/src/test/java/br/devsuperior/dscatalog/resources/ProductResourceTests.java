@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -64,6 +65,12 @@ public class ProductResourceTests {
 	@BeforeEach
 	void setup() throws Exception {
 		dto = new ProductDTO();
+		
+		// passar esses valores para não falhar nos testes de update e save retornar 422
+		dto.setName("teste");
+		dto.setDate(Instant.now());
+		dto.setPrice(23.5);
+		
 		page = new PageImpl<>(List.of(dto));
 		existId = 2l;
 		nonExistId = 3l;
@@ -146,6 +153,7 @@ public class ProductResourceTests {
 	@Test
 	public void updateShouldReturnObjectDtoWhenIdExist() throws Exception {
 		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+		
 		String JsonBody = objectMapper.writeValueAsString(dto);
 		
 		ResultActions resultActions = mockMvc.perform(
