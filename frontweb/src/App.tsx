@@ -1,10 +1,9 @@
 import 'assets/styles/custom.scss';
+import Navbar from 'components/Navbar';
 import './App.css';
 
 function App() {
-  return (
-    <h1>DS Catalog - ReactJS</h1>
-  );
+  return <Navbar />;
 }
 
 export default App;
