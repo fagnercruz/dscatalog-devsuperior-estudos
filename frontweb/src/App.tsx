@@ -1,12 +1,11 @@
 import 'assets/styles/custom.scss';
-import Navbar from 'components/Navbar';
+import Home from 'pages/Home';
 import './App.css';
 
 function App() {
   return (
     <>
-      <Navbar />
-      <h1>ReactJS Application</h1>
+      <Home/>
     </>
   );
 }
