@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <h1>DS Catalog ReactJS Application</h1>
+      <h1>ReactJS Application</h1>
     </>
   );
 }
