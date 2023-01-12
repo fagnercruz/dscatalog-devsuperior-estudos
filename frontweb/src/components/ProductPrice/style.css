@@ -1,0 +1,18 @@
+.price-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+.currency{
+    color: #9E9E9E;
+    padding-right: 6px;
+}
+.price {
+    color: #407BFF;
+    /*font-weight: bold;*/
+    font-size: 32px;
+    margin: 0px;
+    padding: 0px;
+}
